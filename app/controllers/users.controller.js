@@ -1,7 +1,7 @@
 const { successResponse, errorResponse, } = require("../services/response.service");
-const { 
-    countUsers, 
-    getListUsers, 
+const {
+    countUsers,
+    getListUsers,
     verifyUserIfExist,
     addUsers
 } = require("../services/users.service")
@@ -44,11 +44,11 @@ exports.countUsers = async (req, res) => {
  * @param {*} res
 **/
 exports.allCustomers = async (req, res) => {
-    try{
+    try {
         try {
             const { role } = req.params;
             const clientsLists = await getListUsers(role);
-    
+
             for (const client of clientsLists) {
                 const reservationLIste = await getReservationByIdClient(client.id);
                 const nbrTache = await getTach(client.id);
@@ -58,12 +58,12 @@ exports.allCustomers = async (req, res) => {
                 client.dataValues.debs = debs > 0 ? true : false;
                 client.dataValues.nombre_de_tache = nbrTache;
             }
-    
+
             res.send(successResponse(clientsLists))
         } catch (err) {
             res.send(errorResponse(err))
         }
-    }catch(err){
+    } catch (err) {
         res.send(errorResponse(err.message))
     }
 }
@@ -75,21 +75,25 @@ exports.allCustomers = async (req, res) => {
  * @param {*} res
 **/
 exports.addAgent = async (req, res) => {
-    try{
+    try {
         const {
             email, first_name, last_name, sexe, phone_number, date_of_birth, address, city, postal_code, nationality
         } = req.body;
+        const date = Date.now();
         const password = await bcrypt.hash('agent1234', 8);
         const agent = {
-            email, first_name, last_name,title: sexe==="femme"? "Mr" : "Mm", sexe, phone_number, date_of_birth, address, city, postal_code, nationality, password, is_validate:true, role: "AGENT", matricule: `EP-${postal_code}5`
+            email, first_name, last_name, title: sexe === "femme" ? "Mm" : "Mr", sexe, phone_number, date_of_birth, address, city, postal_code, nationality, password, is_validate: true, role: "AGENT", matricule: `${postal_code}${date}`
         }
         const is_exist = await verifyUserIfExist(email, phone_number);
-        if (is_exist){
+        if (is_exist) {
             res.send(errorResponse({ message: "Email or phone number not found!" }))
         }
         await addUsers(agent);
         res.send(successResponse({ message: "Successfully" }))
-    }catch(err){
+        /* res.send(successResponse({
+            email, first_name, last_name, sexe, phone_number, date_of_birth, address, city, postal_code, nationality
+        })) */
+    } catch (err) {
         res.send(errorResponse(err.message))
     }
 }
