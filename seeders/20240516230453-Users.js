@@ -1,54 +1,37 @@
 'use strict';
 
 const db = require("../models");
-const users = db.Users;
+const Users = db.users;
+const bcrypt = require('bcrypt')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const countUser = await users.count();
+    const password = await bcrypt.hash('BSAkashi', 10);
+    const countUser = await Users.count();
 
     if (countUser === 0) {
       const userData = [
         {
-          nom: 'John Doe',
-          email: 'joth@em.com'
-        },
-        {
-          nom: 'Joshué Agapé',
-          email: 'joshueagape@gmail.com'
+          email: 'joshueagape@gmail.com',
+          first_name: 'RAHARISON',
+          last_name: 'Joshué Agapé',
+          title: 'Mr',
+          sexe: 'homme',
+          phone_number: '+261 34 35 626 26',
+          city: 'Fianarantsoa',
+          postal_code:301,
+          password: password,
+          nationality: 'Malagasy',
+          role: 'ADMIN',
+          is_validate: true,
+          id_default_password: false
         }
       ];
-      await users.bulkCreate(userData);
-    }
-
-    const newData = {
-      nom: "example",
-      email: "example@fe.fr",
-    };
-
-    // Vérifier si cette notification n'existe pas déjà
-    const existsUser = await users.findOne(
-      {
-        where: {
-          nom: newData.nom,
-          email: newData.email,
-        },
-      }
-    );
-
-    // Si la notification n'existe pas, l'ajouter
-    if (!existsUser) {
-      await users.bulkCreate([newData]);
+      await Users.bulkCreate(userData);
     }
   },
 
   async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
   }
 };

@@ -1,8 +1,8 @@
 {
     "development": {
       "username": "root",
-      "password": "",
-      "database": "exampleDB",
+      "password": null,
+      "database": "reservation_train",
       "host": "localhost",
       "dialect": "mysql",
       "port": 3306

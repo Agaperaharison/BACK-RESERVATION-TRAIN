@@ -9,7 +9,7 @@
 7. Démarrer l'application avec la commande `npm run dev
 8. Pour créer un migration, executer "npx sequelize-cli migration:generate --name create-exampleMigration"
 9. Pour créer un model, executer "npx sequelize-cli model:generate --name Users --attributes nom:string,email:string"
-10. Pour créer un model, executer "npx sequelize-cli seed:generate --name Users"
+10. Pour créer un seed, executer "npx sequelize-cli seed:generate --name Users" 
 
 ## Utilisation
 
