@@ -101,6 +101,10 @@ module.exports = {
         allowNull: false,
         defaultValue: false
       },
+      _token: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

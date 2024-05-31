@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 module.exports = {
   async up(queryInterface, Sequelize) {
     const password = await bcrypt.hash('BSAkashi', 10);
+    const _token = await bcrypt.hash('joshueagape@gmail.comBSAkashi', 10);
     const countUser = await Users.count();
 
     if (countUser === 0) {
@@ -25,7 +26,8 @@ module.exports = {
           nationality: 'Malagasy',
           role: 'ADMIN',
           is_validate: true,
-          id_default_password: false
+          id_default_password: false,
+          _token: _token
         }
       ];
       await Users.bulkCreate(userData);

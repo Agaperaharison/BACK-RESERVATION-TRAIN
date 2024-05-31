@@ -38,11 +38,6 @@ module.exports = {
         allowNull: true,
         defaultValue: false
       },
-      is_deleted: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        defaultValue: false
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -21,7 +21,7 @@ module.exports = {
           price: 30000
         },
       ];
-      //await Trips.bulkCreate(tripData);
+      await Trips.bulkCreate(tripData);
     }
   },
 

@@ -3,6 +3,7 @@ module.exports = (app, io) => {
     var routes = require("express").Router();
 
     routes.get('/', authController.index);
+    routes.post('/login', authController.login);
 
-    app.use("/api/auth", routes);
+    app.use("/project-IHM/reservation-train/api/auth", routes); 
 };

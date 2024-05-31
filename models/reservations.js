@@ -36,11 +36,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: false
     },
-    is_deleted: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: false
-    },
   }, {
     sequelize,
     modelName: 'reservations',

@@ -66,7 +66,7 @@ module.exports = {
           longitude: '49.409372',
           detail:'Gare'
         },
-        {
+        /* {
           localisation_city: "Tampina",
           localisation_postal_code: '',
           latitude: '',
@@ -86,7 +86,7 @@ module.exports = {
           latitude: '',
           longitude: '',
           detail:'Gare'
-        },
+        }, */
         {
           localisation_city: "Anjeva",
           localisation_postal_code: '',
@@ -122,13 +122,13 @@ module.exports = {
           longitude: '47.505988',
           detail:'Guichet de gare'
         },
-        {
+        /* {
           localisation_city: "Andrambovato",
           localisation_postal_code: '',
           latitude: '',
           longitude: '',
           detail:'Guichet de gare'
-        },
+        }, */
         {
           localisation_city: "Tolongoina",
           localisation_postal_code: '',
@@ -143,15 +143,15 @@ module.exports = {
           longitude: '48.277279',
           detail:'Guichet de gare'
         },
-        {
+        /* {
           localisation_city: "Mahabako",
           localisation_postal_code: '',
           latitude: '',
           longitude: '',
           detail:'Guichet de gare'
-        },
+        }, */
       ];
-      //await Stations.bulkCreate(stationData);
+      await Stations.bulkCreate(stationData);
     }
   },
 

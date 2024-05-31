@@ -43,7 +43,8 @@ module.exports = {
       },
       is_deleted: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
       },
       price: {
         type: Sequelize.DOUBLE,
