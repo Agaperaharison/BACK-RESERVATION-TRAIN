@@ -13,20 +13,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      from_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
       from: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      to_id: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
       to: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       departure_date: {

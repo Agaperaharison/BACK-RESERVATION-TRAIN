@@ -1,7 +1,10 @@
 const db = require("../../models");
 const Reservations = db.reservations;
 const { successResponse, errorResponse, } = require("../services/response.service");
-const { countReservations_withOption, countReservations } = require("../services/reservation.service")
+const {
+    countReservations_withOption,
+    totalAmount, totalPaid, totalUnpaid
+} = require("../services/reservation.service")
 
 /**
  * index
@@ -27,5 +30,24 @@ exports.reservationsCount = async (req, res) => {
         }))
     } catch (err) {
         res.send(errorResponse(err));
+    }
+}
+
+/**
+ * TOTAL SALES
+ * @param {*} req
+ * @param {*} res
+ */
+exports.SalesTotal = async (req, res) => {
+    try {
+        const { date } = req.params;
+        const amount = await totalAmount(date);
+        const paid = await totalPaid(date);
+        const unpaid = await totalUnpaid(date);
+        res.send(successResponse({
+            amount, paid, unpaid
+        }))
+    } catch (err) {
+        res.send(errorResponse(err.message))
     }
 }

@@ -13,4 +13,15 @@ exports.AllStations = async () => {
     } catch (err) {
         throw new Error(err.message);
     }
+},
+
+exports.findStationById = async (id) => {
+    try{
+        const station = await Stations.findOne({
+            where: { id }
+        });
+        return station
+    }catch(err){
+        throw new Error(err.message);
+    }
 }

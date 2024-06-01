@@ -12,10 +12,8 @@ module.exports = {
       const tripData = [
         {
           train_id: 1,
-          from_id: 1,
-          from: 'Fianarantsoa',
-          to_id: 2,
-          to: "Mandroseza",
+          from: 1,
+          to: 2,
           departure_date: '2024-06-30',
           departure_time: '07:00',
           price: 30000

@@ -68,7 +68,9 @@ exports.tipsCount = async (req, res) => {
  */
 exports.allTrips = async (req, res) => {
     try {
-        const tripsLists = await Trips.findAll();
+        const tripsLists = await Trips.findAll({
+            order: [['createdAt', 'DESC']]
+        });
         for (const trip of tripsLists) {
             const associatedTrains = await getTrainAssociedInTrip(trip.train_id);
             trip.dataValues.train = associatedTrains;

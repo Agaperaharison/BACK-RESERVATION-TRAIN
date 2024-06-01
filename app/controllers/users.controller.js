@@ -1,6 +1,12 @@
 const { successResponse, errorResponse, } = require("../services/response.service");
-const { countUsers, getListUsers } = require("../services/users.service")
+const { 
+    countUsers, 
+    getListUsers, 
+    verifyUserIfExist,
+    addUsers
+} = require("../services/users.service")
 const { getReservationByIdClient, unpaidForClient } = require("../services/reservation.service")
+const bcrypt = require('bcrypt');
 
 /**
  * index
@@ -55,6 +61,32 @@ exports.allCustomers = async (req, res) => {
         } catch (err) {
             res.send(errorResponse(err))
         }
+    }catch(err){
+        res.send(errorResponse(err.message))
+    }
+}
+
+
+/**
+ * ADD NEW AGENT
+ * @param {*} req
+ * @param {*} res
+**/
+exports.addAgent = async (req, res) => {
+    try{
+        const {
+            email, first_name, last_name, sexe, phone_number, date_of_birth, address, city, postal_code, nationality
+        } = req.body;
+        const password = await bcrypt.hash('agent1234', 8);
+        const agent = {
+            email, first_name, last_name,title: sexe==="homme"? "Mr" : "Mm", sexe, phone_number, date_of_birth, address, city, postal_code, nationality, password, is_validate:true, role: "AGENT", matricule: `EP-${postal_code}`
+        }
+        const is_exist = await verifyUserIfExist(email, phone_number);
+        if (is_exist){
+            res.send(successResponse({ message: "Email or phone number not found!" }))
+        }
+        await addUsers(agent);
+        res.send(successResponse({ message: "Successfully" }))
     }catch(err){
         res.send(errorResponse(err.message))
     }

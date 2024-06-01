@@ -57,3 +57,87 @@ exports.unpaidForClient = async (client_id) => {
         throw new Error(err.message);
     }
 };
+
+
+/**
+ * SUM SEAGE UNAVAILABLE
+ * @param {*} trip_id
+ */
+exports.countSeatUnavailable = async (trip_id) => {
+    try {
+        const numberOfSeatUnavailable = Reservations.sum('number_of_seats', {
+            where: { trip_id, is_reset: false }
+        });
+        return numberOfSeatUnavailable
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
+
+
+/**
+ * SUM UNPAID AND PAID
+ * @param {*} date
+ */
+exports.totalAmount = async (date) => {
+    try {
+        const today = date ? date : new Date();
+        const todayString = today.toISOString().slice(0, 10);
+        const sumPaidAndUnpaid = await Reservations.sum(
+            sequelize.literal('paid + unpaid'),
+            {
+                where: sequelize.where(
+                    sequelize.fn('DATE', sequelize.col('createdAt')),
+                    todayString
+                )
+            }
+        );
+        return sumPaidAndUnpaid;
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+/**
+ * SUM PAID
+ * @param {*} date
+ */
+exports.totalPaid = async (date) => {
+    try {
+        const today = date ? date : new Date();
+        const todayString = today.toISOString().slice(0, 10);
+        const sumPaid = await Reservations.sum('paid',
+            {
+                where: sequelize.where(
+                    sequelize.fn('DATE', sequelize.col('createdAt')),
+                    todayString
+                )
+            }
+        );
+        return sumPaid;
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+/**
+ * SUM UNPAID
+ * @param {*} date
+ */
+exports.totalUnpaid = async (date) => {
+    try {
+        const today = date ? date : new Date();
+        const todayString = today.toISOString().slice(0, 10);
+        const sumUnpaid = await Reservations.sum('unpaid',
+            {
+                where: sequelize.where(
+                    sequelize.fn('DATE', sequelize.col('createdAt')),
+                    todayString
+                )
+            }
+        );
+        return sumUnpaid;
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}

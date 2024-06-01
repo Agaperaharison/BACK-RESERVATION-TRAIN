@@ -1,6 +1,20 @@
 const db = require("../../models");
 const Users = db.users;
-const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
+
+
+/**
+ * ADD NEW USER
+ * @param {Array} user
+ */
+exports.addUsers = async (user) => {
+    try{
+        await Users.create(user);
+        return true
+    }catch(err){
+        throw new Error(err.message)
+    }
+}
 
 /**
  * COUNT USERS
@@ -40,5 +54,27 @@ exports.getAgentsById = async (id) => {
         return agents
     }catch(err){
         throw new Error(err.message);
+    }
+}
+
+/**
+ * VERIFY UN USER IF IS EXIST
+ * @param {string} email
+ * @param {string} phone_number
+ */
+exports.verifyUserIfExist = async (email, phone_number) => {
+    try{
+        const existByEmail = await Users.findOne({
+            where: { email }
+        })
+        const existByPhoneNumber = await Users.findOne({
+            where: { phone_number }
+        })
+        if (existByEmail || existByPhoneNumber) {
+            return true
+        }
+        return false
+    }catch(err){
+        throw new Error(err.message)
     }
 }
