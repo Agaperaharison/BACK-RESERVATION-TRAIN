@@ -17,17 +17,15 @@ exports.allTrains = async () => {
 
 /**
  * FIND TRAIN ASSOCIATED IN TRIPS
- * @param {BigInteger} train_id
+ * @param {BigInteger} id
  */
-exports.getTrainAssociedInTrip = async (train_id) => {
+exports.getTrainAssociedInTrip = async (id) => {
     try {
-        const train = await Trains.findOne({
-            where: { id: train_id }
+        const trains = await Trains.findAll({
+            where: { id }
         });
-        if (!train) {
-            throw new Error("Train not found");
-        }
-        return train;
+        
+        return trains;
     } catch (err) {
         throw new Error(err.message);
     }

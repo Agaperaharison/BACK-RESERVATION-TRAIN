@@ -1,5 +1,6 @@
 const db = require("../../models");
 const Reservations = db.reservations;
+const Trips = db.trips;
 const { findTripsAssociatedInReservation } = require("./trips.service");
 const { getAgentsById } = require("./users.service");
 
@@ -27,13 +28,17 @@ exports.countReservations = async () => {
 exports.getReservationByIdClient = async (client_id) => {
     try {
         const reservations = await Reservations.findAll({
-            where: { client_id }
+            where: { client_id },
+            /* include: [{
+                model: Trips,
+                required: true,
+            }], */ 
         });
 
         for (const reservation of reservations) {
             const tripsLists = await findTripsAssociatedInReservation(reservation.trip_id);
-            const agents = await getAgentsById(reservation.agent_id);
             reservation.dataValues.trips = tripsLists;
+            const agents = await getAgentsById(reservation.agent_id);
             reservation.dataValues.agents = agents;
         }
 

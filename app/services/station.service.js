@@ -17,7 +17,7 @@ exports.AllStations = async () => {
 
 exports.findStationById = async (id) => {
     try{
-        const station = await Stations.findOne({
+        const station = await Stations.findAll({
             where: { id }
         });
         return station
