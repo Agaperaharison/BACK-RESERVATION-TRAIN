@@ -81,7 +81,8 @@ exports.SalesAmount = async (req, res) => {
 exports.getAllReservations = async (req, res) => {
     try {
         const reservations = await Reservations.findAll({
-            where: { is_reset: false }
+            where: { is_reset: false },
+            order: [["id", "DESC"]]
         });
 
         for (const reservation of reservations) {

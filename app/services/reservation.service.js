@@ -27,7 +27,8 @@ exports.countReservations = async () => {
 exports.getReservationByIdClient = async (client_id) => {
     try {
         const reservations = await Reservations.findAll({
-            where: { client_id }
+            where: { client_id },
+            order: [["id","DESC"]]
         });
 
         for (const reservation of reservations) {
@@ -42,6 +43,22 @@ exports.getReservationByIdClient = async (client_id) => {
         throw new Error(err.message);
     }
 };
+
+/**
+ * GET ALL RESERVATIONS BY ID CLIENT
+ * @param {*} client_id
+ */
+exports.getTach = async (agent_id) => {
+    try {
+        const reservations = await Reservations.count({
+            where: { agent_id }
+        });
+
+        return reservations
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
 
 /**
  * SUM UNPAID CLIENT

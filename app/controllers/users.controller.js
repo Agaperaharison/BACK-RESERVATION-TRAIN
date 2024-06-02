@@ -5,7 +5,7 @@ const {
     verifyUserIfExist,
     addUsers
 } = require("../services/users.service")
-const { getReservationByIdClient, unpaidForClient } = require("../services/reservation.service")
+const { getReservationByIdClient, unpaidForClient, getTach } = require("../services/reservation.service")
 const bcrypt = require('bcrypt');
 
 /**
@@ -51,10 +51,12 @@ exports.allCustomers = async (req, res) => {
     
             for (const client of clientsLists) {
                 const reservationLIste = await getReservationByIdClient(client.id);
+                const nbrTache = await getTach(client.id);
                 const debs = await unpaidForClient(client.id);
                 client.dataValues.reservations = reservationLIste;
                 client.dataValues.sumUnpaid = debs ? debs : 0;
                 client.dataValues.debs = debs > 0 ? true : false;
+                client.dataValues.nombre_de_tache = nbrTache;
             }
     
             res.send(successResponse(clientsLists))
