@@ -4,7 +4,8 @@ module.exports = (app, io) => {
 
     routes.get('/', reservationsController.index);
     routes.get('/count-reservations', reservationsController.reservationsCount);
-    routes.get('/total-sales/:date', reservationsController.SalesTotal);
+    routes.get('/get-sales', reservationsController.SalesTotal);
+    routes.get('/get-total-amount', reservationsController.SalesAmount);
     routes.get('/all-reservations', reservationsController.getAllReservations);
 
     app.use("/project-IHM/reservation-train/api/reservations", routes);
