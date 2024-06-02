@@ -2,6 +2,7 @@ const db = require("../../models");
 const Users = db.users;
 const bcrypt = require('bcrypt')
 const { successResponse, errorResponse, } = require("../services/response.service");
+const { verifyUserIfExistByEmail } = require("../services/users.service")
 
 /**
  * index
@@ -11,6 +12,39 @@ const { successResponse, errorResponse, } = require("../services/response.servic
 exports.index = async (req, res) => {
     res.send('Auth controllers')
 };
+
+/**
+ * SIGN UP
+ * @param {*} req
+ * @param {*} res
+ */
+exports.signUp = async (req, res) => {
+    try {
+        const { first_name, last_name, email, password, title, sexe } = req.body;
+        const pwdHashed = await bcrypt.hash(password, 8);
+        const string = `${email}${password}`;
+        const _token = await bcrypt.hash(string, 8);
+        const role = "CLIENT";
+        const user = {
+            first_name,
+            last_name,
+            email,
+            password: pwdHashed,
+            role,
+            _token,
+            title,
+            sexe
+        };
+        const verify = await verifyUserIfExistByEmail(email);
+        if (verify) {
+            res.send(errorResponse({ message: "Email arleady used by a customer!" }));
+        };
+        await Users.create(user);
+        res.send(successResponse({ message: "successfully!" }));
+    } catch (err) {
+        res.send(errorResponse(err.message))
+    }
+}
 
 /**
  * LOGIN
@@ -30,7 +64,7 @@ exports.login = async (req, res) => {
         const verify = await bcrypt.compare(password, user.password);
         if (verify) {
             res.cookie('session_token', user._token);
-            res.send(successResponse(verify));
+            res.send(successResponse(user));
         } else {
             res.send(successResponse({ message: 'Incorrect password' }));
         }
@@ -48,12 +82,12 @@ exports.verifySession = async (req, res) => {
     try {
         const token = req.cookies.session_token;
         const user = await Users.findOne({
-            where : { _token: token }
+            where: { _token: token }
         })
         if (user) {
-            res.json({ status: 200, message: 'Session active' });
+            res.send(successResponse(user));
         } else {
-            res.json({ status: 401, message: 'Session inactive' });
+            res.send(errorResponse({ message: `il n'y pas de session en cour...` }));
         }
     } catch (err) {
         res.send(errorResponse(err.message))
@@ -66,14 +100,14 @@ exports.verifySession = async (req, res) => {
  * @param {*} res
  */
 exports.infoAdmin = async (req, res) => {
-    try{
+    try {
         const token = req.cookies.session_token;
         const infoAdmin = await Users.findOne({
-            where : { _token: token }
+            where: { _token: token }
         });
 
         res.send(successResponse(infoAdmin));
-    }catch(err){
+    } catch (err) {
         res.send(errorResponse(err.message))
     }
 }
@@ -83,7 +117,7 @@ exports.infoAdmin = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-exports.logoutSessionAdmin = async (req,res) => {
+exports.logoutSessionAdmin = async (req, res) => {
     try {
         res.clearCookie('session_token');
         res.json({ status: 200, message: 'Déconnexion réussie !' });

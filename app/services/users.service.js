@@ -93,3 +93,16 @@ exports.verifyUserIfExist = async (email, phone_number) => {
         throw new Error(err.message)
     }
 }
+exports.verifyUserIfExistByEmail = async (email) => {
+    try {
+        const existByEmail = await Users.findOne({
+            where: { email }
+        })
+        if (existByEmail) {
+            return true
+        }
+        return false
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}

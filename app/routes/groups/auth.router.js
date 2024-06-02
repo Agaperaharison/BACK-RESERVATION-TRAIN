@@ -3,6 +3,7 @@ module.exports = (app, io) => {
     var routes = require("express").Router();
 
     routes.get('/', authController.index);
+    routes.post('/sign-up', authController.signUp);
     routes.post('/login', authController.login);
     routes.get('/verify-session-admin', authController.verifySession);
     routes.get('/get-info-admin', authController.infoAdmin);
