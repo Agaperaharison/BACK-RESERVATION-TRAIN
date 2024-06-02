@@ -5,6 +5,8 @@ const {
     countReservations_withOption,
     totalAmount, totalPaid, totalUnpaid
 } = require("../services/reservation.service")
+const { findTripsAssociatedInReservation } = require("../services/trips.service");
+const { getUserById } = require("../services/users.service");
 
 /**
  * index
@@ -47,6 +49,26 @@ exports.SalesTotal = async (req, res) => {
         res.send(successResponse({
             amount, paid, unpaid
         }))
+    } catch (err) {
+        res.send(errorResponse(err.message))
+    }
+}
+
+exports.getAllReservations = async (req, res) => {
+    try {
+        const reservations = await Reservations.findAll({
+            where: { is_reset: false }
+        });
+
+        for (const reservation of reservations) {
+            const tripsLists = await findTripsAssociatedInReservation(reservation.trip_id);
+            reservation.dataValues.trip = tripsLists;
+            const client = await getUserById(reservation.client_id);
+            reservation.dataValues.client = client;
+            const agent = await getUserById(reservation.agent_id);
+            reservation.dataValues.agent = agent;
+        }
+        res.send(successResponse(reservations));
     } catch (err) {
         res.send(errorResponse(err.message))
     }

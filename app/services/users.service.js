@@ -8,10 +8,10 @@ const bcrypt = require('bcrypt');
  * @param {Array} user
  */
 exports.addUsers = async (user) => {
-    try{
+    try {
         await Users.create(user);
         return true
-    }catch(err){
+    } catch (err) {
         throw new Error(err.message)
     }
 }
@@ -44,15 +44,30 @@ exports.getListUsers = async (role) => {
  * @param {BigInteger} id
  */
 exports.getAgentsById = async (id) => {
-    try{
-        const agents = await Users.findOne({
-            where: { 
-                role: 'AGENT', 
+    try {
+        const agents = await Users.findAll({
+            where: {
+                role: 'AGENT',
                 id
             }
         })
         return agents
-    }catch(err){
+    } catch (err) {
+        throw new Error(err.message);
+    }
+}
+
+/**
+ * GET INFO USER ASSOCIATED IN RESERVATION
+ * @param {BigInteger} id
+ */
+exports.getUserById = async (id) => {
+    try {
+        const agents = await Users.findAll({
+            where: { id }
+        })
+        return agents
+    } catch (err) {
         throw new Error(err.message);
     }
 }
@@ -63,7 +78,7 @@ exports.getAgentsById = async (id) => {
  * @param {string} phone_number
  */
 exports.verifyUserIfExist = async (email, phone_number) => {
-    try{
+    try {
         const existByEmail = await Users.findOne({
             where: { email }
         })
@@ -74,7 +89,7 @@ exports.verifyUserIfExist = async (email, phone_number) => {
             return true
         }
         return false
-    }catch(err){
+    } catch (err) {
         throw new Error(err.message)
     }
 }

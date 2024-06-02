@@ -1,6 +1,5 @@
 const db = require("../../models");
 const Reservations = db.reservations;
-const Trips = db.trips;
 const { findTripsAssociatedInReservation } = require("./trips.service");
 const { getAgentsById } = require("./users.service");
 
@@ -28,11 +27,7 @@ exports.countReservations = async () => {
 exports.getReservationByIdClient = async (client_id) => {
     try {
         const reservations = await Reservations.findAll({
-            where: { client_id },
-            /* include: [{
-                model: Trips,
-                required: true,
-            }], */ 
+            where: { client_id }
         });
 
         for (const reservation of reservations) {
