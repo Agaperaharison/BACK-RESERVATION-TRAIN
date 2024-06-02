@@ -79,11 +79,11 @@ exports.addAgent = async (req, res) => {
         } = req.body;
         const password = await bcrypt.hash('agent1234', 8);
         const agent = {
-            email, first_name, last_name,title: sexe==="homme"? "Mr" : "Mm", sexe, phone_number, date_of_birth, address, city, postal_code, nationality, password, is_validate:true, role: "AGENT", matricule: `EP-${postal_code}`
+            email, first_name, last_name,title: sexe==="femme"? "Mr" : "Mm", sexe, phone_number, date_of_birth, address, city, postal_code, nationality, password, is_validate:true, role: "AGENT", matricule: `EP-${postal_code}5`
         }
         const is_exist = await verifyUserIfExist(email, phone_number);
         if (is_exist){
-            res.send(successResponse({ message: "Email or phone number not found!" }))
+            res.send(errorResponse({ message: "Email or phone number not found!" }))
         }
         await addUsers(agent);
         res.send(successResponse({ message: "Successfully" }))

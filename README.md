@@ -1,6 +1,6 @@
 # Mon Projet
 
-1. Clonez le projet à partir de GitLab
+1. Clonez le projet à partir de GitHib/GitLab
 2. Installez les dépendances avec la commande `npm install`
 3. Configurez les variables d'environnement dans le .env
 4. Executer "npm run db:create" pour creer la base du env en question

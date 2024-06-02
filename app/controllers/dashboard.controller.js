@@ -1,9 +1,11 @@
 const db = require("../../models");
+const Players = db.players;
 const { successResponse, errorResponse, } = require("../services/response.service");
 const { getTrips } = require("../services/trips.service");
 const { getTrainAssociedInTrip } = require("../services/train.service")
 const { countSeatUnavailable } = require("../services/reservation.service")
 const { findStationById } = require("../services/station.service")
+const { getNotification } = require("../services/notification.service")
 
 exports.analytics = async (req, res) => {
     try {
@@ -23,5 +25,23 @@ exports.analytics = async (req, res) => {
         res.send(successResponse(tripsLists));
     } catch (err) {
         res.send(errorResponse(err.message))
+    }
+}
+
+exports.getNotif = async (req, res) => {
+    try{
+        const { role } = req.params;
+        const players = await Players.findAll({
+            where: { for: role },
+            order: [["createdAt", "DESC"]],
+            limite: 3
+        });
+        for(const player of players){
+            const notification = await getNotification(player.notification_id);
+            player.dataValues.notification_info = notification
+        }
+        res.send(successResponse(players));
+    }catch(err){
+        res.send(errorResponse(err.message));
     }
 }
