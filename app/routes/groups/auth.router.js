@@ -4,6 +4,9 @@ module.exports = (app, io) => {
 
     routes.get('/', authController.index);
     routes.post('/login', authController.login);
+    routes.get('/verify-session-admin', authController.verifySession);
+    routes.get('/get-info-admin', authController.infoAdmin);
+    routes.get('/session-admin-log-out', authController.logoutSessionAdmin);
 
     app.use("/project-IHM/reservation-train/api/auth", routes); 
 };
