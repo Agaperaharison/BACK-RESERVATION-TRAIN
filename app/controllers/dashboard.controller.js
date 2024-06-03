@@ -6,6 +6,7 @@ const { getTrainAssociedInTrip } = require("../services/train.service")
 const { countSeatUnavailable } = require("../services/reservation.service")
 const { findStationById } = require("../services/station.service")
 const { getNotification } = require("../services/notification.service")
+const { getUserById } = require("../services/users.service")
 
 exports.analytics = async (req, res) => {
     try {
@@ -38,7 +39,9 @@ exports.getNotif = async (req, res) => {
         });
         for(const player of players){
             const notification = await getNotification(player.notification_id);
+            const user = await getUserById(player.user_id);
             player.dataValues.notification_info = notification
+            player.dataValues.newUser = user;
         }
         res.send(successResponse(players));
     }catch(err){

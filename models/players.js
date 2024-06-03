@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) { }
   }
   players.init({
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     notification_id: {
       type: DataTypes.STRING,
       allowNull: false,

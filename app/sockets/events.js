@@ -2,6 +2,7 @@ const db = require('../../models');
 const Players = db.players;
 const Sequelize = require('sequelize');
 const { getNotification } = require("../services/notification.service")
+const { getUserById } = require("../services/users.service")
 
 const eventAction = (io) => {
   const userListing = new Set();
@@ -11,16 +12,18 @@ const eventAction = (io) => {
       io.emit('callBack', data);
     });
 
-    socket.on('inscription', async (role) => {
+    socket.on('inscription', async () => {
       const players = await Players.findAll({
-        where: { for: role },
+        where: { for: 'ADMIN' },
         order: [["createdAt", "DESC"]],
         limite: 3
       });
 
       for (const player of players) {
         const notification = await getNotification(player.notification_id);
-        player.dataValues.notification_info = notification
+        const user = await getUserById(player.user_id);
+        player.dataValues.notification_info = notification;
+        player.dataValues.newUser = user;
       }
       io.emit('haveNotif', players);
     })

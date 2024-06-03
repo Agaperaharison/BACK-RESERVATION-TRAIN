@@ -3,6 +3,7 @@ const Users = db.users;
 const bcrypt = require('bcrypt')
 const { successResponse, errorResponse, } = require("../services/response.service");
 const { verifyUserIfExistByEmail } = require("../services/users.service")
+const { createNotification } = require("../services/notification.service")
 
 /**
  * index
@@ -39,8 +40,12 @@ exports.signUp = async (req, res) => {
         if (verify) {
             res.send(errorResponse({ message: "Email arleady used by a customer!" }));
         };
-        await Users.create(user);
-        res.send(successResponse({ message: "successfully!" }));
+
+        const createUser = await Users.create(user);
+        if(createUser){
+            await createNotification(createUser.id, 5, 'ADMIN');
+            res.send(successResponse(createUser));
+        }
     } catch (err) {
         res.send(errorResponse(err.message))
     }
