@@ -11,7 +11,7 @@ module.exports = {
     const _token = await bcrypt.hash('joshueagape@gmail.comBSAkashi', 10);
     const countUser = await Users.count();
 
-    if (countUser === 0) {
+    if (countUser === 0) { 
       const userData = [
         {
           email: 'joshueagape@gmail.com',
@@ -19,6 +19,7 @@ module.exports = {
           last_name: 'Joshué Agapé',
           title: 'Mr',
           sexe: 'homme',
+          date_of_birth: '2001-11-27 00:26:50',
           phone_number: '+261 34 35 626 26',
           city: 'Fianarantsoa',
           postal_code:301,
