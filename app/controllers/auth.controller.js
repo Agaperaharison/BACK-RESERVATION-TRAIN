@@ -2,7 +2,7 @@ const db = require("../../models");
 const Users = db.users;
 const bcrypt = require('bcrypt')
 const { successResponse, errorResponse, } = require("../services/response.service");
-const { verifyUserIfExistByEmail } = require("../services/users.service")
+const { verifyUserIfExistByEmail, updateUser } = require("../services/users.service")
 const { createNotification } = require("../services/notification.service")
 
 /**
@@ -42,7 +42,7 @@ exports.signUp = async (req, res) => {
         };
 
         const createUser = await Users.create(user);
-        if(createUser){
+        if (createUser) {
             await createNotification(createUser.id, 5, 'ADMIN');
             res.send(successResponse(createUser));
         }
@@ -128,5 +128,121 @@ exports.logoutSessionAdmin = async (req, res) => {
         res.json({ status: 200, message: 'Déconnexion réussie !' });
     } catch (err) {
         res.status(500).json({ status: 500, message: err.message });
+    }
+}
+
+
+exports.verifyPassword = async (req, res) => {
+    try {
+        const { user_id, password } = req.params;
+        const user = await Users.findOne({
+            where: { id: user_id }
+        });
+
+        const verify = await bcrypt.compare(password, user.password);
+        if (verify) {
+            return res.send(successResponse(true));
+        }
+        return res.send(successResponse(false));
+    } catch (err) {
+        return res.send(errorResponse(err.message));
+    }
+}
+
+/**
+ * UPDATE FIRST NAME AND LAST NAME USER
+ * @param {*} req
+ * @param {*} res
+ */
+exports.updateName = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { first_name, last_name } = req.body;
+        const user = { first_name, last_name }
+        const response = await updateUser(user, id);
+        if (response) {
+            res.send(successResponse(response));
+        }
+    } catch (err) {
+        res.send(errorResponse(err.message));
+    }
+}
+
+/**
+ * UPDATE EMAIL ADDRESS USER
+ * @param {*} req
+ * @param {*} res
+ */
+exports.updateEmail = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { email } = req.body;
+        const user = { email };
+        const response = await updateUser(user, id);
+        if (response) {
+            res.send(successResponse(response));
+        }
+    } catch (err) {
+        res.send(errorResponse(err.message))
+    }
+}
+
+
+/**
+ * UPDATE DOMICILE ADDRESS USER
+ * @param {*} req
+ * @param {*} res
+ */
+exports.updateAddress = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { address, city, postal_code } = req.body;
+        const user = { address, city, postal_code };
+        const response = await updateUser(user, id);
+        if (response) {
+            res.send(successResponse(response));
+        }
+    } catch (err) {
+        console.log(err.message)
+    }
+}
+
+
+/**
+ * UPDATE PHONE NUMBER USER
+ * @param {*} req
+ * @param {*} res
+ */
+exports.updatePhone = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { phone_number } = req.body;
+        const user = { phone_number };
+        const response = await updateUser(user, id);
+        if (response) {
+            res.send(successResponse(response));
+        }
+    } catch (err) {
+        res.send(errorResponse(err.message))
+    }
+}
+
+
+/**
+ * UPDATE PASSWORD USER
+ * @param {*} req
+ * @param {*} res
+ */
+exports.updatePassword = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { password } = req.body;
+        const user = { password };
+        const response = await updateUser(user, id);
+        if (response) {
+            res.send(successResponse(response));
+        }
+    } catch (err) {
+        res.send(errorResponse(err.message))
     }
 }

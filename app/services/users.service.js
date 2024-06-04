@@ -106,3 +106,12 @@ exports.verifyUserIfExistByEmail = async (email) => {
         throw new Error(err.message)
     }
 }
+
+
+exports.updateUser = async (user, id) => {
+    try{
+        return await Users.update(user, { where: { id }});
+    }catch(err){
+        throw new Error(err.message)
+    }
+}
