@@ -108,6 +108,11 @@ exports.verifyUserIfExistByEmail = async (email) => {
 }
 
 
+/**
+ * SERVICE FOR UPDATE USER
+ * @param {string} email
+ * @param {string} phone_number
+ */
 exports.updateUser = async (user, id) => {
     try{
         return await Users.update(user, { where: { id }});

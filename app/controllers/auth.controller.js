@@ -132,6 +132,11 @@ exports.logoutSessionAdmin = async (req, res) => {
 }
 
 
+/**
+ * VERIFY PASSWORD
+ * @param {*} req
+ * @param {*} res
+ */
 exports.verifyPassword = async (req, res) => {
     try {
         const { user_id, password } = req.params;
