@@ -158,3 +158,33 @@ exports.totalUnpaid = async (date) => {
         throw new Error(err.message)
     }
 }
+
+
+exports.createReservation = async (reservation) => {
+    try{
+        return await Reservations.create(reservation);
+    }catch(err){
+        throw new Error(err.message);
+    }
+}
+
+
+exports.updateReservation = async (reservation, id) => {
+    try{
+        return await Reservations.update(reservation, { where: { id }});
+    }catch(err){
+        throw new Error(err.message)
+    }
+}
+
+
+exports.getReservationById = async (id) => {
+    try {
+        const res = await Reservations.findOne({
+            where: { id }
+        })
+        return res;
+    }catch(err){
+        throw new Error(err.message)
+    }
+}

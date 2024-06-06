@@ -16,11 +16,11 @@ module.exports = {
       },
       email: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
+        allowNull: true,
+        /* unique: true,
         validate: {
           isEmail: true
-        }
+        } */
       },
       first_name: {
         type: Sequelize.STRING,
@@ -60,11 +60,11 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       is_default_password: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         defaultValue: true
       },
       role: {
@@ -81,7 +81,7 @@ module.exports = {
       },
       is_validate: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         defaultValue: false
       },
       reset_password_token: {
@@ -98,7 +98,7 @@ module.exports = {
       },
       is_blocked: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         defaultValue: false
       },
       _token: {

@@ -16,6 +16,13 @@ exports.addUsers = async (user) => {
     }
 }
 
+exports.createUsers = async (user) => {
+    try {
+        return await Users.create(user);
+    } catch (err) {
+        throw new Error(err.message)
+    }
+}
 /**
  * COUNT USERS
  * @param {string} role
@@ -27,6 +34,15 @@ exports.countUsers = async (role, is_validate) => {
     })
 }
 
+exports.getUserByMatricule = async (matricule) => {
+    try{
+        return await Users.findOne({
+            where: { matricule }
+        })
+    }catch(err){
+        throw new Error(err.message);
+    }
+}
 
 /**
  * GET LISTS USERS ( role : ADMIN, CLIENT, AGENT )
@@ -114,9 +130,21 @@ exports.verifyUserIfExistByEmail = async (email) => {
  * @param {string} phone_number
  */
 exports.updateUser = async (user, id) => {
-    try{
-        return await Users.update(user, { where: { id }});
-    }catch(err){
+    try {
+        return await Users.update(user, { where: { id } });
+    } catch (err) {
         throw new Error(err.message)
+    }
+}
+
+
+exports.getUserByToken = async (_token) => {
+    try {
+        const user = await Users.findOne({
+            where: { _token }
+        })
+        return user
+    } catch (err) {
+        throw new Error(err.message);
     }
 }

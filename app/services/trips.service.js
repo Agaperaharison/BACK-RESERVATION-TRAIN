@@ -77,3 +77,15 @@ exports.deleteTrip = async (id) => {
         throw new Error(err.message);
     }
 }
+
+
+exports.getTripsById = async (id) => {
+    try{
+        const trip = await Trips.findOne({
+            where: { id }
+        })
+        return trip;
+    }catch(err){
+        throw new Error(err.message)
+    }
+}

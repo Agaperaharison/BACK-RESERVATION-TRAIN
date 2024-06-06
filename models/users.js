@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+      allowNull: true,
+      /* unique: true,
       validate: {
         isEmail: true,
-      },
+      }, */
     },
     first_name: {
       type: DataTypes.STRING,
@@ -30,11 +30,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     sexe: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     phone_number: {
       type: DataTypes.STRING,
@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     is_default_password: {
       type: DataTypes.INTEGER,
